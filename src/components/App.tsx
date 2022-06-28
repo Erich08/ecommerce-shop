@@ -14,7 +14,7 @@ function App() {
       <Container>
         <Routes>
           <Route path='/' element={<Home />} />
-          <Route path='/' element={<Store />} />
+          <Route path='/store' element={<Store />} />
         </Routes>
       </Container>
       <Footer />
