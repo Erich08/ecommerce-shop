@@ -1,7 +1,7 @@
 import { createContext, ReactNode, useContext, useState } from 'react';
-import { isTemplateExpression } from 'typescript';
+import OffCanvas from '../components/OffCanvas';
 
-const CartContext = createContext({} as CartContext);
+const CartContext = createContext({} as CartContextTypes);
 
 type CartProviderProps = {
   children: ReactNode;
@@ -12,11 +12,13 @@ type CartItem = {
   quantity: number;
 };
 
-type CartContext = {
+type CartContextTypes = {
   cartQty: (id: number) => number;
   increaseQty: (id: number) => void;
   decreaseQty: (id: number) => void;
   removeItem: (id: number) => void;
+  handleShow: () => void;
+  handleClose: () => void;
 };
 
 export function useCart() {
@@ -25,6 +27,7 @@ export function useCart() {
 
 export function CartProvider({ children }: CartProviderProps) {
   const [cart, setCart] = useState<CartItem[]>([]);
+  const [isOpen, setIsOpen] = useState(false);
 
   function cartQty(id: number) {
     return cart.find((item) => item.id === id)?.quantity || 0;
@@ -68,11 +71,28 @@ export function CartProvider({ children }: CartProviderProps) {
     });
   }
 
+  function handleShow() {
+    setIsOpen(true);
+    console.log('hello');
+  }
+
+  function handleClose() {
+    setIsOpen(false);
+  }
+
   return (
     <CartContext.Provider
-      value={{ cartQty, increaseQty, decreaseQty, removeItem }}
+      value={{
+        cartQty,
+        increaseQty,
+        decreaseQty,
+        removeItem,
+        handleShow,
+        handleClose,
+      }}
     >
       {children}
+      <OffCanvas isOpen={isOpen} />
     </CartContext.Provider>
   );
 }
