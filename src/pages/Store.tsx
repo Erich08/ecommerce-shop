@@ -6,7 +6,6 @@ import Col from 'react-bootstrap/Col';
 import { client, urlFor } from '../lib/client';
 import Card from 'react-bootstrap/Card';
 import { format } from '../utilities/formatter';
-import OffCanvas from '../components/OffCanvas';
 
 const query = '*[_type == "product"] {image, name, slug, price}';
 
@@ -34,7 +33,7 @@ export function Store() {
         {itemData.map((item: ItemData) => (
           <Container key={item.slug}>
             <Col>
-              <Card className='bg-dark text-white'>
+              <Card>
                 <Card.Img
                   variant='top'
                   src={urlFor(item.image && item.image[0])}
@@ -45,7 +44,7 @@ export function Store() {
                 <Card.Body>
                   <Card.Title>{item.name}</Card.Title>
                   <Card.Text>{format(item.price)}</Card.Text>
-                  <Button variant='outline-light'>Add to cart</Button>
+                  <Button variant='outline-dark'>Add to cart</Button>
                 </Card.Body>
               </Card>
             </Col>

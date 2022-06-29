@@ -1,10 +1,7 @@
 import { Button, Container, Nav, Navbar } from 'react-bootstrap';
 import { NavLink } from 'react-router-dom';
-import { useCart } from '../context/CartContext';
 
 export default function NavBar() {
-  const { handleShow } = useCart();
-
   return (
     <Navbar bg='dark' variant='dark'>
       <Container>
@@ -16,9 +13,7 @@ export default function NavBar() {
             Store
           </Nav.Link>
         </Nav>
-        <Button variant='outline-light' onClick={handleShow}>
-          Cart
-        </Button>
+        <Button variant='outline-light'>Cart</Button>
       </Container>
     </Navbar>
   );
