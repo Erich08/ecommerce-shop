@@ -1,7 +1,7 @@
 import { createContext, ReactNode, useContext, useState } from 'react';
 import OffCanvas from '../components/OffCanvas';
 
-const CartContext = createContext({} as CartContext);
+const CartContext = createContext({} as CartContextTypes);
 
 type CartProviderProps = {
   children: ReactNode;
@@ -12,7 +12,7 @@ type CartItem = {
   quantity: number;
 };
 
-type CartContext = {
+type CartContextTypes = {
   cartQty: (id: number) => number;
   increaseQty: (id: number) => void;
   decreaseQty: (id: number) => void;

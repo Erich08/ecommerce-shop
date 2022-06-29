@@ -6,7 +6,6 @@ import Col from 'react-bootstrap/Col';
 import { client, urlFor } from '../lib/client';
 import Card from 'react-bootstrap/Card';
 import { format } from '../utilities/formatter';
-import OffCanvas from '../components/OffCanvas';
 
 const query = '*[_type == "product"] {image, name, slug, price}';
 
