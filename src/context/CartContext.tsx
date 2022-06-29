@@ -73,10 +73,7 @@ export function CartProvider({ children }: CartProviderProps) {
 
   function handleShow() {
     setIsOpen(true);
-<<<<<<< HEAD
-=======
     console.log('hello');
->>>>>>> main
   }
 
   function handleClose() {
