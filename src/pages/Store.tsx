@@ -19,19 +19,18 @@ export type ItemData = {
 export function Store() {
   const [itemData, setItemData] = useState<ItemData[]>([] as ItemData[]);
 
-  const fetchData = async () => {
-    const data = await client.fetch(query);
-    setItemData(data);
-  };
-
   useEffect(() => {
+    const fetchData = async () => {
+      const data = await client.fetch(query);
+      setItemData(data);
+    };
     fetchData();
   }, []);
 
   return (
     <Container className='mt-5'>
       <Row sm={1} md={3} lg={4} className='g-3'>
-        {itemData.map((item) => (
+        {itemData.map((item: ItemData) => (
           <Container key={item.slug}>
             <Col>
               <Card>
@@ -41,6 +40,7 @@ export function Store() {
                   height='250px'
                   style={{ objectFit: 'cover' }}
                 />
+
                 <Card.Body>
                   <Card.Title>{item.name}</Card.Title>
                   <Card.Text>{format(item.price)}</Card.Text>
