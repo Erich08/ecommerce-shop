@@ -1,7 +1,15 @@
-import { createContext, ReactNode, useContext, useState } from 'react';
+import {
+  createContext,
+  ReactNode,
+  useContext,
+  useState,
+  useEffect,
+} from 'react';
 import OffCanvas from '../components/OffCanvas';
+import { client } from '../lib/client';
 
 const CartContext = createContext({} as CartContextTypes);
+const query = '*[_type == "product"] {image, name, slug, price, id}';
 
 type CartProviderProps = {
   children: ReactNode;
@@ -19,6 +27,16 @@ type CartContextTypes = {
   removeItem: (id: number) => void;
   handleShow: () => void;
   handleClose: () => void;
+  cart: CartItem[];
+  itemData: DataItem[];
+  itemQty: number;
+};
+
+type DataItem = {
+  image: string;
+  name: string;
+  price: number;
+  id: number;
 };
 
 export function useCart() {
@@ -28,6 +46,17 @@ export function useCart() {
 export function CartProvider({ children }: CartProviderProps) {
   const [cart, setCart] = useState<CartItem[]>([]);
   const [isOpen, setIsOpen] = useState(false);
+  const [itemData, setItemData] = useState<DataItem[]>([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const data = await client.fetch(query);
+      setItemData(data);
+    };
+    fetchData();
+  }, []);
+
+  const itemQty = cart.reduce((qty, item) => item.quantity + qty, 0);
 
   function cartQty(id: number) {
     return cart.find((item) => item.id === id)?.quantity || 0;
@@ -55,7 +84,7 @@ export function CartProvider({ children }: CartProviderProps) {
         return currItems.filter((item) => item.id !== id);
       } else {
         return currItems.map((item) => {
-          if (item.id === id) {
+          if (item.id === id && item.quantity > 0) {
             return { ...item, quantity: item.quantity - 1 };
           } else {
             return item;
@@ -73,7 +102,6 @@ export function CartProvider({ children }: CartProviderProps) {
 
   function handleShow() {
     setIsOpen(true);
-    console.log('hello');
   }
 
   function handleClose() {
@@ -89,6 +117,9 @@ export function CartProvider({ children }: CartProviderProps) {
         removeItem,
         handleShow,
         handleClose,
+        cart,
+        itemData,
+        itemQty,
       }}
     >
       {children}
