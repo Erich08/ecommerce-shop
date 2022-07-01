@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import Container from 'react-bootstrap/Container';
 import Button from 'react-bootstrap/Button';
 import Row from 'react-bootstrap/Row';
@@ -17,7 +17,7 @@ export function Store() {
         {itemData.map((item) => (
           <Container key={item.id}>
             <Col>
-              <Card>
+              <Card className='bg-dark text-white'>
                 <Card.Img
                   variant='top'
                   src={urlFor(item.image && item.image[0])}
@@ -25,15 +25,25 @@ export function Store() {
                   style={{ objectFit: 'cover' }}
                 />
 
-                <Card.Body>
+                <Card.Body className='me-auto'>
                   <Card.Title>{item.name}</Card.Title>
                   <Card.Text>{format(item.price)}</Card.Text>
-                  <Button
-                    variant='outline-dark'
-                    onClick={() => increaseQty(item.id)}
-                  >
-                    Add to cart
-                  </Button>
+                  <div className='btn-card-container'>
+                    <Button
+                      className='store-btn'
+                      variant='success'
+                      onClick={() => increaseQty(item.id)}
+                    >
+                      Add to cart
+                    </Button>
+
+                    <Button
+                      className='btn-left store-btn'
+                      variant='outline-light'
+                    >
+                      Details
+                    </Button>
+                  </div>
                 </Card.Body>
               </Card>
             </Col>

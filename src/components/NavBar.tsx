@@ -1,27 +1,35 @@
 import { Button, Container, Nav, Navbar } from 'react-bootstrap';
 import { NavLink } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
-
-type Quantity = {
-  quantity: number;
-};
+import { FaShoppingBag, FaHome } from 'react-icons/fa';
 
 export default function NavBar() {
   const { handleShow, itemQty } = useCart();
 
   return (
     <Navbar bg='dark' variant='dark'>
-      <Container>
+      <Container className='nav-container'>
         <Nav className='me-auto'>
           <Nav.Link as={NavLink} to='/'>
+            <span className='fa-nav'>
+              <FaHome size={35} />
+            </span>
             Home
           </Nav.Link>
-          <Nav.Link as={NavLink} to='/store'>
-            Store
+          <Nav.Link
+            as={NavLink}
+            to='/store'
+            style={{ verticalAlign: 'middle' }}
+          >
+            <span className='fa-nav'>
+              <FaShoppingBag size={35} />
+            </span>
+            Shop
           </Nav.Link>
         </Nav>
         {itemQty ? (
           <Button
+            className='cart-btn'
             variant='outline-light'
             onClick={handleShow}
             style={{ position: 'relative' }}

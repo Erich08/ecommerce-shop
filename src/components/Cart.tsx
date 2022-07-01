@@ -1,7 +1,6 @@
 import React from 'react';
 import { useCart } from '../context/CartContext';
 import Stack from 'react-bootstrap/stack';
-import Container from 'react-bootstrap/Container';
 import { urlFor } from '../lib/client';
 import { format } from '../utilities/formatter';
 import Button from 'react-bootstrap/Button';
@@ -12,7 +11,7 @@ type CartProps = {
 };
 
 export default function Cart({ id, quantity }: CartProps) {
-  const { itemData, removeItem, increaseQty, decreaseQty, cartQty } = useCart();
+  const { itemData, removeItem, increaseQty, decreaseQty } = useCart();
   const item = itemData.find((i) => i.id === id);
 
   if (item == null) return null;
@@ -24,6 +23,7 @@ export default function Cart({ id, quantity }: CartProps) {
         height={120}
         width={120}
         style={{ objectFit: 'cover' }}
+        alt={item.name}
       />
       <div className='me-auto'>
         <p>{format(item.price * quantity)}</p>
