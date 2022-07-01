@@ -1,7 +1,7 @@
 import React from 'react';
 import Offcanvas from 'react-bootstrap/Offcanvas';
 import { useCart } from '../context/CartContext';
-import Stack from 'react-bootstrap/Stack';
+import { Stack } from 'react-bootstrap';
 import Cart from './Cart';
 import { format } from '../utilities/formatter';
 
