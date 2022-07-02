@@ -4,14 +4,9 @@ import Container from 'react-bootstrap/esm/Container';
 import Modal from 'react-bootstrap/Modal';
 import { useCart } from '../context/CartContext';
 
-type ModalDetails = {
-  name: string;
-};
-
-export default function ItemModal() {
-  const { handleModalClose, isModalOpen, isModalDetails } = useCart();
-  // const item = itemData.find((i) => i.id === id);
-  // if (item == null) return null;
+export default function ItemModal({}) {
+  const { handleModalClose, isModalOpen, isModalData, isModalDescription } =
+    useCart();
 
   return (
     <Modal
@@ -26,12 +21,16 @@ export default function ItemModal() {
         <Modal.Title>Item Details</Modal.Title>
       </Modal.Header>
 
-      <h4></h4>
-
       <Container>
-        <Modal.Body></Modal.Body>
+        <Modal.Body>
+          <h4>{isModalData}</h4>
+          <p>{isModalDescription}</p>
+        </Modal.Body>
         <Modal.Footer>
-          <Button onClick={handleModalClose}>Close</Button>
+          <Button variant='dark' onClick={handleModalClose}>
+            Close
+          </Button>
+          {/* TODO: Incorporate add to cart button in Modal */}
         </Modal.Footer>
       </Container>
     </Modal>

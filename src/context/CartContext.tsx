@@ -11,7 +11,8 @@ import OffCanvas from '../components/OffCanvas';
 import { client } from '../lib/client';
 
 const CartContext = createContext({} as CartContextTypes);
-const query = '*[_type == "product"] {image, name, slug, price, id}';
+const query =
+  '*[_type == "product"] {image, name, slug, price, id, description}';
 
 type CartProviderProps = {
   children: ReactNode;
@@ -31,12 +32,13 @@ type CartContextTypes = {
   handleClose: () => void;
   handleModalShow: () => void;
   handleModalClose: () => void;
-  itemDetailModal: (name: string) => void;
+  dataModal: (name: string, description: string) => void;
   cart: CartItem[];
   itemData: DataItem[];
-  isModalDetails: ModalDetails[];
   itemQty: number;
   isModalOpen: boolean;
+  isModalData: any;
+  isModalDescription: any;
 };
 
 type DataItem = {
@@ -44,10 +46,7 @@ type DataItem = {
   name: string;
   price: number;
   id: number;
-};
-
-type ModalDetails = {
-  name: string | any;
+  description: string;
 };
 
 export function useCart() {
@@ -58,8 +57,9 @@ export function CartProvider({ children }: CartProviderProps) {
   const [cart, setCart] = useState<CartItem[]>([]);
   const [isOpen, setIsOpen] = useState(false);
   const [itemData, setItemData] = useState<DataItem[]>([]);
+  const [isModalData, setIsModalData] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isModalDetails, setIsModalDetails] = useState<ModalDetails[]>([]);
+  const [isModalDescription, setIsModalDescription] = useState('');
 
   useEffect(() => {
     const fetchData = async () => {
@@ -113,20 +113,10 @@ export function CartProvider({ children }: CartProviderProps) {
     });
   }
 
-  function itemDetailModal(name: string) {
-    setIsModalDetails((currentItem) => {
-      if (currentItem.find((item) => item.name === name) == null) {
-        return [...currentItem, { name }];
-      } else {
-        return currentItem.map((item) => {
-          if (item.name === name) {
-            return { ...item, name: name };
-          } else {
-            return item;
-          }
-        });
-      }
-    });
+  function dataModal(name: string, description: string) {
+    setIsModalOpen(true);
+    setIsModalData(name);
+    setIsModalDescription(description);
   }
 
   const handleShow = () => setIsOpen(true);
@@ -148,12 +138,13 @@ export function CartProvider({ children }: CartProviderProps) {
         handleClose,
         handleModalShow,
         handleModalClose,
-        itemDetailModal,
+        dataModal,
         cart,
         itemData,
         itemQty,
         isModalOpen,
-        isModalDetails,
+        isModalData,
+        isModalDescription,
       }}
     >
       {children}

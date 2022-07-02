@@ -12,10 +12,17 @@ type ItemProps = {
   image: string;
   price: number;
   id: number;
+  description: string;
 };
 
-export default function StoreItems({ name, id, image, price }: ItemProps) {
-  const { itemData, handleModalShow, increaseQty, itemDetailModal } = useCart();
+export default function StoreItems({
+  name,
+  id,
+  image,
+  price,
+  description,
+}: ItemProps) {
+  const { increaseQty, dataModal } = useCart();
 
   return (
     <>
@@ -27,7 +34,6 @@ export default function StoreItems({ name, id, image, price }: ItemProps) {
               src={urlFor(image && image[0])}
               height='250px'
               style={{ objectFit: 'cover' }}
-              onClick={() => itemDetailModal(name)}
             />
 
             <Card.Body className='me-auto'>
@@ -45,7 +51,7 @@ export default function StoreItems({ name, id, image, price }: ItemProps) {
                 <Button
                   className='btn-left store-btn'
                   variant='outline-light'
-                  onClick={() => handleModalShow()}
+                  onClick={() => dataModal(name, description)}
                 >
                   Details
                 </Button>

@@ -34,5 +34,10 @@ export default {
       type: 'number',
       title: 'id',
     },
+    {
+      name: 'description',
+      type: 'string',
+      title: 'Description',
+    },
   ],
 };
