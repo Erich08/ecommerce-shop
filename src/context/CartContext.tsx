@@ -5,7 +5,9 @@ import {
   useState,
   useEffect,
 } from 'react';
+import ItemModal from '../components/ItemModal';
 import OffCanvas from '../components/OffCanvas';
+
 import { client } from '../lib/client';
 
 const CartContext = createContext({} as CartContextTypes);
@@ -27,9 +29,14 @@ type CartContextTypes = {
   removeItem: (id: number) => void;
   handleShow: () => void;
   handleClose: () => void;
+  handleModalShow: () => void;
+  handleModalClose: () => void;
+  itemDetailModal: (name: string) => void;
   cart: CartItem[];
   itemData: DataItem[];
+  isModalDetails: ModalDetails[];
   itemQty: number;
+  isModalOpen: boolean;
 };
 
 type DataItem = {
@@ -37,6 +44,10 @@ type DataItem = {
   name: string;
   price: number;
   id: number;
+};
+
+type ModalDetails = {
+  name: string | any;
 };
 
 export function useCart() {
@@ -47,6 +58,8 @@ export function CartProvider({ children }: CartProviderProps) {
   const [cart, setCart] = useState<CartItem[]>([]);
   const [isOpen, setIsOpen] = useState(false);
   const [itemData, setItemData] = useState<DataItem[]>([]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isModalDetails, setIsModalDetails] = useState<ModalDetails[]>([]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -100,13 +113,29 @@ export function CartProvider({ children }: CartProviderProps) {
     });
   }
 
-  function handleShow() {
-    setIsOpen(true);
+  function itemDetailModal(name: string) {
+    setIsModalDetails((currentItem) => {
+      if (currentItem.find((item) => item.name === name) == null) {
+        return [...currentItem, { name }];
+      } else {
+        return currentItem.map((item) => {
+          if (item.name === name) {
+            return { ...item, name: name };
+          } else {
+            return item;
+          }
+        });
+      }
+    });
   }
 
-  function handleClose() {
-    setIsOpen(false);
-  }
+  const handleShow = () => setIsOpen(true);
+
+  const handleClose = () => setIsOpen(false);
+
+  const handleModalShow = () => setIsModalOpen(true);
+
+  const handleModalClose = () => setIsModalOpen(false);
 
   return (
     <CartContext.Provider
@@ -117,13 +146,21 @@ export function CartProvider({ children }: CartProviderProps) {
         removeItem,
         handleShow,
         handleClose,
+        handleModalShow,
+        handleModalClose,
+        itemDetailModal,
         cart,
         itemData,
         itemQty,
+        isModalOpen,
+        isModalDetails,
       }}
     >
       {children}
+
       <OffCanvas isOpen={isOpen} />
+
+      <ItemModal />
     </CartContext.Provider>
   );
 }

@@ -11,7 +11,6 @@ type OffCanvasProps = {
 
 export default function OffCanvas({ isOpen }: OffCanvasProps) {
   const { handleClose, cart, itemData } = useCart();
-  console.log(cart);
   return (
     <>
       <Offcanvas
