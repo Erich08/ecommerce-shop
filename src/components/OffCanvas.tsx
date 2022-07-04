@@ -4,6 +4,12 @@ import { useCart } from '../context/CartContext';
 import { Stack } from 'react-bootstrap';
 import Cart from './Cart';
 import { format } from '../utilities/formatter';
+import Button from 'react-bootstrap/Button';
+import {
+  useStripe,
+  useElements,
+  PaymentElement,
+} from '@stripe/react-stripe-js';
 
 type OffCanvasProps = {
   isOpen: boolean;
@@ -11,6 +17,29 @@ type OffCanvasProps = {
 
 export default function OffCanvas({ isOpen }: OffCanvasProps) {
   const { handleClose, cart, itemData } = useCart();
+  const stripe = useStripe();
+  const elements = useElements();
+
+  const handleSubmit = async (event: any) => {
+    event.preventDefault();
+
+    if (!stripe || !elements) {
+      return;
+    }
+
+    const result = await stripe.confirmPayment({
+      elements,
+      confirmParams: {
+        return_url: 'localhost:3000/store',
+      },
+    });
+
+    if (result.error) {
+      console.log(result.error.message);
+    }
+    console.log('hello');
+  };
+
   return (
     <>
       <Offcanvas
@@ -35,6 +64,17 @@ export default function OffCanvas({ isOpen }: OffCanvasProps) {
                   return total + (item?.price || 0) * cartItem.quantity;
                 }, 0)
               )}
+            </div>
+            <div
+              className='checkout-btn'
+              style={{ display: 'flex', justifyContent: 'center' }}
+            >
+              <form onSubmit={handleSubmit}>
+                <PaymentElement />
+                <Button variant='outline-dark' disabled={!stripe}>
+                  Check Out
+                </Button>
+              </form>
             </div>
           </Stack>
         </Offcanvas.Body>
