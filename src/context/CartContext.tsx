@@ -10,16 +10,6 @@ import OffCanvas from '../components/OffCanvas';
 
 import { client } from '../lib/client';
 
-import { Elements } from '@stripe/react-stripe-js';
-import { loadStripe } from '@stripe/stripe-js';
-const stripePromise = loadStripe(
-  'pk_test_51LHubjJfzFxD8MWo6isZ92bUpn2QB2UfrpBzY8wCXxMHx42DnPMmejFsefF3qD5Dt3b7j1jhAIhp7aFZEQjPPLzn005jIlbKhC'
-);
-
-const options = {
-  clientSecret: process.env.REACT_APP_STRIPE_KEY,
-};
-
 const CartContext = createContext({} as CartContextTypes);
 const query =
   '*[_type == "product"] {image, name, slug, price, id, description}';
@@ -158,9 +148,9 @@ export function CartProvider({ children }: CartProviderProps) {
       }}
     >
       {children}
-      <Elements stripe={stripePromise} options={options}>
-        <OffCanvas isOpen={isOpen} />
-      </Elements>
+
+      <OffCanvas isOpen={isOpen} />
+
       <ItemModal />
     </CartContext.Provider>
   );
